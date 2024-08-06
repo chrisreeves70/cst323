@@ -51,3 +51,4 @@ sqlsrv_close($conn);
     Email: <input type="email" name="email" required>
     <input type="submit" value="Add User">
 </form>
+
