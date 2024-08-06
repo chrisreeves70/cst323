@@ -1,53 +1,51 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Connection settings
+$servername = "cloudserveradmin.database.windows.net";
+$username = "cloudserveradmin";
+$password = "Scout1st";
+$dbname = "cloud_test_db";
 
-include 'db_connection.php';
+// SQL Server connection
+$connectionInfo = array(
+    "UID" => $username,
+    "pwd" => $password,
+    "Database" => $dbname,
+    "LoginTimeout" => 30,
+    "Encrypt" => 1,
+    "TrustServerCertificate" => 0
+);
+$serverName = "tcp:$servername,1433";
+$conn = sqlsrv_connect($serverName, $connectionInfo);
 
+if ($conn === false) {
+    die(print_r(sqlsrv_errors(), true));
+}
+
+// Collect POST data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $conn->real_escape_string($_POST['name']);
-    $email = $conn->real_escape_string($_POST['email']);
+    $username = $_POST['username'];
+    $email = $_POST['email'];
 
-    if ($stmt = $conn->prepare("INSERT INTO users (name, email) VALUES (?, ?)")) {
-        $stmt->bind_param('ss', $name, $email);
+    // Prepare the SQL query
+    $sql = "INSERT INTO Users (username, email) VALUES (?, ?)";
+    $params = array($username, $email);
 
-        if ($stmt->execute()) {
-            $stmt->close();
-            header("Location: view_users.php");
-            exit();
-        } else {
-            echo "Error: " . $conn->error;
-        }
+    // Execute the query
+    $stmt = sqlsrv_query($conn, $sql, $params);
+
+    if ($stmt === false) {
+        die(print_r(sqlsrv_errors(), true));
     } else {
-        echo "Prepare failed: " . $conn->error;
+        echo "User added successfully";
     }
 }
+
+sqlsrv_close($conn);
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add User</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container">
-        <h1 class="mt-5">Add User</h1>
-        <form method="post" action="">
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Add User</button>
-        </form>
-    </div>
-</body>
-</html>
-
+<!-- HTML form -->
+<form method="post" action="">
+    Username: <input type="text" name="username" required>
+    Email: <input type="email" name="email" required>
+    <input type="submit" value="Add User">
+</form>
