@@ -1,6 +1,6 @@
 <?php
 
-$servername = 'cloudserveradmin.database.windows.net'; 
+$servername = 'cloudserveradmin.mysql.database.azure.com'; 
 $username = 'cloudserveradmin'; 
 $password = 'Scout1st'; 
 $dbname = 'cloud_test_db'; 
