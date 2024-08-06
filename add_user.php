@@ -5,7 +5,7 @@ $username = "cloudserveradmin";
 $password = "Scout1st";
 $dbname = "cloud_test_db";
 
-// SQL Server connection
+// SQL Server connection information
 $connectionInfo = array(
     "UID" => $username,
     "pwd" => $password,
@@ -15,6 +15,8 @@ $connectionInfo = array(
     "TrustServerCertificate" => 0
 );
 $serverName = "tcp:$servername,1433";
+
+// Create connection
 $conn = sqlsrv_connect($serverName, $connectionInfo);
 
 if ($conn === false) {
@@ -23,12 +25,12 @@ if ($conn === false) {
 
 // Collect POST data
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
+    $name = $_POST['name'];
     $email = $_POST['email'];
 
     // Prepare the SQL query
-    $sql = "INSERT INTO Users (username, email) VALUES (?, ?)";
-    $params = array($username, $email);
+    $sql = "INSERT INTO Users (name, email) VALUES (?, ?)";
+    $params = array($name, $email);
 
     // Execute the query
     $stmt = sqlsrv_query($conn, $sql, $params);
@@ -45,7 +47,7 @@ sqlsrv_close($conn);
 
 <!-- HTML form -->
 <form method="post" action="">
-    Username: <input type="text" name="username" required>
+    Name: <input type="text" name="name" required>
     Email: <input type="email" name="email" required>
     <input type="submit" value="Add User">
 </form>
