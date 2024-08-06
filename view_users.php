@@ -1,8 +1,21 @@
 <?php
+// Include database connection file
 include 'db_connection.php';
 
-$sql = "SELECT * FROM users";
-$result = $conn->query($sql);
+// Create connection
+$conn = sqlsrv_connect($serverName, $connectionInfo);
+
+if ($conn === false) {
+    die("Connection failed: " . print_r(sqlsrv_errors(), true));
+}
+
+// Fetch data from Users table
+$sql = "SELECT id, name, email FROM Users";
+$stmt = sqlsrv_query($conn, $sql);
+
+if ($stmt === false) {
+    die("SQL query failed: " . print_r(sqlsrv_errors(), true));
+}
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +29,7 @@ $result = $conn->query($sql);
 <body>
     <div class="container">
         <h1 class="mt-5">User List</h1>
-        <?php if ($result->num_rows > 0): ?>
+        <?php if (sqlsrv_has_rows($stmt)): ?>
             <table class="table table-bordered mt-3">
                 <thead>
                     <tr>
@@ -26,11 +39,11 @@ $result = $conn->query($sql);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
                         <tr>
-                            <td><?php echo $row["id"]; ?></td>
-                            <td><?php echo $row["name"]; ?></td>
-                            <td><?php echo $row["email"]; ?></td>
+                            <td><?php echo htmlspecialchars($row["id"]); ?></td>
+                            <td><?php echo htmlspecialchars($row["name"]); ?></td>
+                            <td><?php echo htmlspecialchars($row["email"]); ?></td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
@@ -42,3 +55,8 @@ $result = $conn->query($sql);
     </div>
 </body>
 </html>
+
+<?php
+// Close the connection
+sqlsrv_close($conn);
+?>
