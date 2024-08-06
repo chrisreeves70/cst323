@@ -1,9 +1,8 @@
 <?php
-
-$servername = 'cloudserveradmin.mysql.database.azure.com'; 
-$username = 'cloudserveradmin'; 
-$password = 'Scout1st'; 
-$dbname = 'cloud_test_db'; 
+$servername = "cloudserveradmin.database.windows.net";
+$username = "cloudserveradmin";
+$password = "Scout1st";
+$dbname = "cloud_test_db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -12,4 +11,5 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+echo "Connected successfully";
 ?>
