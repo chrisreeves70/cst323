@@ -1,9 +1,9 @@
 <?php
-// Retrieve connection parameters from environment variables
-$servername = getenv('cloudserveradmin.database.windows.net');
-$username = getenv('cloudserveradmin');
-$password = getenv('Scout1st');
-$dbname = getenv('cloud_test_db');
+// Database configuration
+$servername = "cloudserveradmin.database.windows.net";
+$username = "cloudserveradmin";
+$password = "Scout1st";
+$dbname = "cloud_test_db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
