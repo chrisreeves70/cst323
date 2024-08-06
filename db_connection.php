@@ -4,12 +4,23 @@ $username = "cloudserveradmin";
 $password = "Scout1st";
 $dbname = "cloud_test_db";
 
+
+$connectionInfo = array(
+    "UID" => $username,
+    "pwd" => $password,
+    "Database" => $dbname,
+    "LoginTimeout" => 30,
+    "Encrypt" => 1,
+    "TrustServerCertificate" => 0
+);
+$serverName = "tcp:$servername,1433";
+
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = sqlsrv_connect($serverName, $connectionInfo);
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($conn === false) {
+    die(print_r(sqlsrv_errors(), true));
 }
 echo "Connected successfully";
 ?>
