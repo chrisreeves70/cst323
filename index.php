@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="mt-5">Welcome to the User Management System</h1>
+        <h1 class="mt-5">Welcome to the Activity 2 Cloud App</h1>
         <a href="add_user.php" class="btn btn-primary mt-3">Add User</a>
         <a href="view_users.php" class="btn btn-secondary mt-3">View Users</a>
     </div>
