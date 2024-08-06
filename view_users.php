@@ -1,5 +1,4 @@
 <?php
-// Include database connection file
 include 'db_connection.php';
 
 // Create connection
@@ -9,13 +8,8 @@ if ($conn === false) {
     die("Connection failed: " . print_r(sqlsrv_errors(), true));
 }
 
-// Fetch data from Users table
-$sql = "SELECT id, name, email FROM Users";
-$stmt = sqlsrv_query($conn, $sql);
-
-if ($stmt === false) {
-    die("SQL query failed: " . print_r(sqlsrv_errors(), true));
-}
+$sql = "SELECT * FROM Users";
+$result = sqlsrv_query($conn, $sql);
 ?>
 
 <!DOCTYPE html>
@@ -29,21 +23,26 @@ if ($stmt === false) {
 <body>
     <div class="container">
         <h1 class="mt-5">User List</h1>
-        <?php if (sqlsrv_has_rows($stmt)): ?>
+        <?php if (sqlsrv_has_rows($result)): ?>
             <table class="table table-bordered mt-3">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)): ?>
+                    <?php while ($row = sqlsrv_fetch_array($result, SQLSRV_FETCH_ASSOC)): ?>
                         <tr>
                             <td><?php echo htmlspecialchars($row["id"]); ?></td>
                             <td><?php echo htmlspecialchars($row["name"]); ?></td>
                             <td><?php echo htmlspecialchars($row["email"]); ?></td>
+                            <td>
+                                <a href="edit_user.php?id=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="delete_user.php?id=<?php echo htmlspecialchars($row['id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?');">Delete</a>
+                            </td>
                         </tr>
                     <?php endwhile; ?>
                 </tbody>
