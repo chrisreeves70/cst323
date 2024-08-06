@@ -1,9 +1,9 @@
 <?php
 // Database configuration
-$servername = "your_server_name"; // Update with your server name
-$username = "your_username"; // Update with your username
-$password = "your_password"; // Update with your password
-$dbname = "your_database_name"; // Update with your database name
+$servername = "cloudserveradmin.database.windows.net";
+$username = "cloudserveradmin";
+$password = "Scout1st";
+$dbname = "cloud_test_db";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
